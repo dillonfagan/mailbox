@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mailbox/api/message.dart';
-import 'package:mailbox/cubits/inbox.dart';
+import 'package:mailbox/cubits/mailbox.dart';
 import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
 import 'package:mailbox/widgets/mailbox/message_tile.dart';
@@ -24,14 +23,14 @@ class InboxScreen extends StatelessWidget {
         actionsPadding: EdgeInsets.only(right: Spacing.large),
       ),
       drawer: MailNavigationDrawer(),
-      body: BlocBuilder<InboxCubit, List<Message>>(
-        builder: (context, inbox) {
+      body: BlocBuilder<MailboxCubit, MailboxState>(
+        builder: (context, mailbox) {
           return ListView.builder(
             itemBuilder: (context, i) {
-              final message = inbox[i];
+              final message = mailbox.inbox[i];
               return MessageTile(message: message);
             },
-            itemCount: inbox.length,
+            itemCount: mailbox.inbox.length,
           );
         },
       ),

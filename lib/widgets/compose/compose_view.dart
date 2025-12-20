@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mailbox/api/message.dart';
-import 'package:mailbox/cubits/inbox.dart';
+import 'package:mailbox/cubits/mailbox.dart';
 import 'package:mailbox/utils/spacing.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -113,7 +113,7 @@ class _ComposeViewState extends State<ComposeView> {
     final isValid = formKey.currentState?.validate() ?? false;
     if (!isValid) return;
 
-    BlocProvider.of<InboxCubit>(context).send(
+    BlocProvider.of<MailboxCubit>(context).send(
       Message(
         recipient: to.text.trim(),
         sender: 'user@example.com',

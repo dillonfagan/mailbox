@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mailbox/cubits/inbox.dart';
+import 'package:mailbox/cubits/mailbox.dart';
 import 'package:mailbox/screens/inbox.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => InboxCubit(),
+      create: (context) => MailboxCubit(),
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
