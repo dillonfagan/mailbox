@@ -25,10 +25,12 @@ class InboxScreen extends StatelessWidget {
             itemBuilder: (context, i) {
               final message = inbox[i];
               return ListTile(
-                leading: CircleAvatar(child: Text('AB')),
-                title: Text(message.subject ?? 'No Subject'),
+                leading: CircleAvatar(
+                  child: Text(message.sender.substring(0, 2).toUpperCase()),
+                ),
+                title: Text(message.sender),
                 subtitle: Text(
-                  message.text ?? 'No content',
+                  message.subject.isEmpty ? 'No Subject' : message.subject,
                   overflow: TextOverflow.ellipsis,
                 ),
                 onTap: () {},

@@ -6,7 +6,11 @@ class InboxCubit extends Cubit<List<Message>> {
 
   void send(Message sent) {
     final reply = Message(
-      subject: 'Reply: ${sent.subject}',
+      recipient: sent.sender,
+      sender: sent.recipient,
+      subject: sent.subject.isEmpty
+          ? 'Reply: No Subject'
+          : 'Reply: ${sent.subject}',
       text: 'Thank you for your email.',
     );
     emit([...state, reply]);

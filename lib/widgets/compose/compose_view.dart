@@ -113,9 +113,15 @@ class _ComposeViewState extends State<ComposeView> {
     final isValid = formKey.currentState?.validate() ?? false;
     if (!isValid) return;
 
-    BlocProvider.of<InboxCubit>(
-      context,
-    ).send(Message(subject: subject.text.trim(), text: body.text.trim()));
+    BlocProvider.of<InboxCubit>(context).send(
+      Message(
+        recipient: to.text.trim(),
+        sender: 'user@example.com',
+        subject: subject.text.trim(),
+        text: body.text.trim(),
+      ),
+    );
+
     Navigator.of(context).pop();
   }
 }
