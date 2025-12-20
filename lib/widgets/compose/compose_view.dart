@@ -17,16 +17,6 @@ class _ComposeViewState extends State<ComposeView> {
   final subject = TextEditingController();
   final body = TextEditingController();
 
-  void send() {
-    final isValid = formKey.currentState?.validate() ?? false;
-    if (!isValid) return;
-
-    BlocProvider.of<InboxCubit>(
-      context,
-    ).send(Message(subject: subject.text.trim(), text: body.text.trim()));
-    Navigator.of(context).pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,7 +24,7 @@ class _ComposeViewState extends State<ComposeView> {
       children: [
         AppBar(
           automaticallyImplyLeading: false,
-          leading: CloseButton(),
+          leading: CloseButton(onPressed: close),
           title: Text('Compose'),
           actions: [TextButton(onPressed: send, child: Text('Send'))],
           actionsPadding: EdgeInsets.only(right: Spacing.large),
@@ -86,5 +76,46 @@ class _ComposeViewState extends State<ComposeView> {
         ),
       ],
     );
+  }
+
+  Future<void> close() async {
+    if (to.text.isNotEmpty || subject.text.isNotEmpty || body.text.isNotEmpty) {
+      final result = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          icon: Icon(Icons.warning_rounded, color: Colors.amber),
+          title: Text('Discard?'),
+          content: Text('Are you sure you want to discard this draft?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: Text('Discard'),
+            ),
+          ],
+        ),
+      );
+
+      if (result == true && mounted) {
+        Navigator.of(context).pop();
+      }
+
+      return;
+    }
+
+    Navigator.of(context).pop();
+  }
+
+  void send() {
+    final isValid = formKey.currentState?.validate() ?? false;
+    if (!isValid) return;
+
+    BlocProvider.of<InboxCubit>(
+      context,
+    ).send(Message(subject: subject.text.trim(), text: body.text.trim()));
+    Navigator.of(context).pop();
   }
 }
