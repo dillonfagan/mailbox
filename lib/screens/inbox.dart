@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mailbox/api/message.dart';
 import 'package:mailbox/cubits/inbox.dart';
+import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
+import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
+import 'package:mailbox/widgets/shared/menu_button.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
@@ -12,13 +15,14 @@ class InboxScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inbox'),
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+        leading: MenuButton(),
         actions: [
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
-          CircleAvatar(child: Text('CD')),
+          CircleAvatar(child: Text('A')),
         ],
-        actionsPadding: EdgeInsets.only(right: 12.0),
+        actionsPadding: EdgeInsets.only(right: Spacing.large),
       ),
+      drawer: MailNavigationDrawer(),
       body: BlocBuilder<InboxCubit, List<Message>>(
         builder: (context, inbox) {
           return ListView.builder(
