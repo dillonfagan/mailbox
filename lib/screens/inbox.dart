@@ -4,6 +4,7 @@ import 'package:mailbox/api/message.dart';
 import 'package:mailbox/cubits/inbox.dart';
 import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
+import 'package:mailbox/widgets/mailbox/message_tile.dart';
 import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
 import 'package:mailbox/widgets/shared/menu_button.dart';
 
@@ -28,17 +29,7 @@ class InboxScreen extends StatelessWidget {
           return ListView.builder(
             itemBuilder: (context, i) {
               final message = inbox[i];
-              return ListTile(
-                leading: CircleAvatar(
-                  child: Text(message.sender.substring(0, 2).toUpperCase()),
-                ),
-                title: Text(message.sender),
-                subtitle: Text(
-                  message.subject.isEmpty ? 'No Subject' : message.subject,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                onTap: () {},
-              );
+              return MessageTile(message: message);
             },
             itemCount: inbox.length,
           );
