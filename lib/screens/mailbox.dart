@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mailbox/cubits/mailbox.dart';
 import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
-import 'package:mailbox/widgets/mailbox/message_tile.dart';
+import 'package:mailbox/widgets/inbox/inbox_list_view.dart';
 import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
 import 'package:mailbox/widgets/shared/menu_button.dart';
 
-class InboxScreen extends StatelessWidget {
-  const InboxScreen({super.key});
+class MailboxScreen extends StatelessWidget {
+  const MailboxScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +21,7 @@ class InboxScreen extends StatelessWidget {
         actionsPadding: EdgeInsets.only(right: Spacing.large),
       ),
       drawer: MailNavigationDrawer(),
-      body: BlocBuilder<MailboxCubit, MailboxState>(
-        builder: (context, mailbox) {
-          return ListView.builder(
-            itemBuilder: (context, i) {
-              final message = mailbox.inbox[i];
-              return MessageTile(message: message);
-            },
-            itemCount: mailbox.inbox.length,
-          );
-        },
-      ),
+      body: InboxListView(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => compose(context),
         icon: Icon(Icons.create),

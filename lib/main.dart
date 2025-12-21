@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mailbox/cubits/mailbox.dart';
-import 'package:mailbox/screens/inbox.dart';
+import 'package:mailbox/screens/mailbox.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: .fromSeed(brightness: .dark, seedColor: Colors.indigo),
         ),
-        home: const InboxScreen(),
+        home: const MailboxScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
