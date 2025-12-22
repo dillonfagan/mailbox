@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mailbox/widgets/mailbox/destination.dart';
 
 class MailNavigationRail extends StatelessWidget {
   final int selectedIndex;
   final void Function(int) onDestinationSelected;
+  final List<MailboxDestination> destinations;
 
   const MailNavigationRail({
     super.key,
     required this.selectedIndex,
     required this.onDestinationSelected,
+    required this.destinations,
   });
 
   @override
@@ -16,28 +19,15 @@ class MailNavigationRail extends StatelessWidget {
       labelType: NavigationRailLabelType.all,
       selectedIndex: selectedIndex,
       onDestinationSelected: onDestinationSelected,
-      destinations: [
-        NavigationRailDestination(
-          icon: Icon(Icons.inbox_outlined),
-          selectedIcon: Icon(Icons.inbox),
-          label: Text('Inbox'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.edit_outlined),
-          selectedIcon: Icon(Icons.edit),
-          label: Text('Sent'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.drafts_outlined),
-          selectedIcon: Icon(Icons.drafts),
-          label: Text('Drafts'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.delete_outlined),
-          selectedIcon: Icon(Icons.delete),
-          label: Text('Trash'),
-        ),
-      ],
+      destinations: destinations
+          .map(
+            (d) => NavigationRailDestination(
+              icon: Icon(d.icon),
+              selectedIcon: Icon(d.selectedIcon),
+              label: Text(d.label),
+            ),
+          )
+          .toList(),
     );
   }
 }

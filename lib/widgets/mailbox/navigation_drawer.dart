@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mailbox/utils/spacing.dart';
+import 'package:mailbox/widgets/mailbox/destination.dart';
 
 class MailNavigationDrawer extends StatelessWidget {
   final int selectedIndex;
   final void Function(int) onDestinationSelected;
+  final List<MailboxDestination> destinations;
 
   const MailNavigationDrawer({
     super.key,
     required this.selectedIndex,
     required this.onDestinationSelected,
+    required this.destinations,
   });
 
   @override
@@ -49,28 +52,15 @@ class MailNavigationDrawer extends StatelessWidget {
           );
         },
       ),
-      children: [
-        NavigationDrawerDestination(
-          icon: Icon(Icons.inbox_outlined),
-          label: Text('Inbox'),
-          selectedIcon: Icon(Icons.inbox),
-        ),
-        NavigationDrawerDestination(
-          icon: Icon(Icons.send_outlined),
-          label: Text('Sent'),
-          selectedIcon: Icon(Icons.send),
-        ),
-        NavigationDrawerDestination(
-          icon: Icon(Icons.drafts_outlined),
-          label: Text('Drafts'),
-          selectedIcon: Icon(Icons.drafts),
-        ),
-        NavigationDrawerDestination(
-          icon: Icon(Icons.delete_outlined),
-          label: Text('Trash'),
-          selectedIcon: Icon(Icons.delete),
-        ),
-      ],
+      children: destinations
+          .map(
+            (d) => NavigationDrawerDestination(
+              icon: Icon(d.icon),
+              selectedIcon: Icon(d.selectedIcon),
+              label: Text(d.label),
+            ),
+          )
+          .toList(),
     );
   }
 }

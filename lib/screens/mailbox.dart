@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
 import 'package:mailbox/widgets/inbox/inbox_list_view.dart';
+import 'package:mailbox/widgets/mailbox/destination.dart';
 import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
 import 'package:mailbox/widgets/mailbox/navigation_rail.dart';
 import 'package:mailbox/widgets/sent/sent_list_view.dart';
@@ -15,8 +16,34 @@ class MailboxScreen extends StatefulWidget {
 }
 
 class _MailboxScreenState extends State<MailboxScreen> {
-  int viewIndex = 0;
-  final views = [InboxListView(), SentListView()];
+  int destinationIndex = 0;
+
+  final destinations = [
+    MailboxDestination(
+      label: 'Inbox',
+      icon: Icons.inbox_outlined,
+      selectedIcon: Icons.inbox,
+      view: InboxListView(),
+    ),
+    MailboxDestination(
+      label: 'Sent',
+      icon: Icons.send_outlined,
+      selectedIcon: Icons.send,
+      view: SentListView(),
+    ),
+    MailboxDestination(
+      label: 'Drafts',
+      icon: Icons.drafts_outlined,
+      selectedIcon: Icons.drafts,
+      view: Container(),
+    ),
+    MailboxDestination(
+      label: 'Trash',
+      icon: Icons.delete_outlined,
+      selectedIcon: Icons.delete,
+      view: Container(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +55,7 @@ class _MailboxScreenState extends State<MailboxScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Inbox'),
+            title: Text(destinations[destinationIndex].label),
             leading: MenuButton(),
             actions: [
               IconButton(icon: Icon(Icons.search), onPressed: () {}),
@@ -37,14 +64,15 @@ class _MailboxScreenState extends State<MailboxScreen> {
             actionsPadding: EdgeInsets.only(right: Spacing.large),
           ),
           drawer: MailNavigationDrawer(
-            selectedIndex: viewIndex,
+            selectedIndex: destinationIndex,
             onDestinationSelected: (index) {
               setState(() {
-                viewIndex = index;
+                destinationIndex = index;
               });
             },
+            destinations: destinations,
           ),
-          body: views[viewIndex],
+          body: destinations[destinationIndex].view,
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => compose(context),
             icon: Icon(Icons.create),
@@ -58,7 +86,7 @@ class _MailboxScreenState extends State<MailboxScreen> {
   Widget buildWideLayout(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inbox'),
+        title: Text(destinations[destinationIndex].label),
         actions: [
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           CircleAvatar(child: Text('A')),
@@ -70,14 +98,15 @@ class _MailboxScreenState extends State<MailboxScreen> {
       body: Row(
         children: [
           MailNavigationRail(
-            selectedIndex: viewIndex,
+            selectedIndex: destinationIndex,
             onDestinationSelected: (index) {
               setState(() {
-                viewIndex = index;
+                destinationIndex = index;
               });
             },
+            destinations: destinations,
           ),
-          Expanded(child: views[viewIndex]),
+          Expanded(child: destinations[destinationIndex].view),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
