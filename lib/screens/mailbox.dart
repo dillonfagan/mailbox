@@ -3,6 +3,7 @@ import 'package:mailbox/utils/spacing.dart';
 import 'package:mailbox/widgets/compose/compose_view.dart';
 import 'package:mailbox/widgets/inbox/inbox_list_view.dart';
 import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
+import 'package:mailbox/widgets/mailbox/navigation_rail.dart';
 import 'package:mailbox/widgets/shared/menu_button.dart';
 
 class MailboxScreen extends StatelessWidget {
@@ -10,18 +11,52 @@ class MailboxScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return buildWideLayout(context);
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('Inbox'),
+            leading: MenuButton(),
+            actions: [
+              IconButton(icon: Icon(Icons.search), onPressed: () {}),
+              CircleAvatar(child: Text('A')),
+            ],
+            actionsPadding: EdgeInsets.only(right: Spacing.large),
+          ),
+          drawer: MailNavigationDrawer(),
+          body: InboxListView(),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () => compose(context),
+            icon: Icon(Icons.create),
+            label: Text('Compose'),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildWideLayout(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Inbox'),
-        leading: MenuButton(),
         actions: [
           IconButton(icon: Icon(Icons.search), onPressed: () {}),
           CircleAvatar(child: Text('A')),
         ],
         actionsPadding: EdgeInsets.only(right: Spacing.large),
+        automaticallyImplyLeading: false,
+        centerTitle: false,
       ),
-      drawer: MailNavigationDrawer(),
-      body: InboxListView(),
+      body: Row(
+        children: [
+          MailNavigationRail(),
+          Expanded(child: InboxListView()),
+        ],
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => compose(context),
         icon: Icon(Icons.create),
