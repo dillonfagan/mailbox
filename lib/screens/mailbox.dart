@@ -4,10 +4,19 @@ import 'package:mailbox/widgets/compose/compose_view.dart';
 import 'package:mailbox/widgets/inbox/inbox_list_view.dart';
 import 'package:mailbox/widgets/mailbox/navigation_drawer.dart';
 import 'package:mailbox/widgets/mailbox/navigation_rail.dart';
+import 'package:mailbox/widgets/sent/sent_list_view.dart';
 import 'package:mailbox/widgets/shared/menu_button.dart';
 
-class MailboxScreen extends StatelessWidget {
+class MailboxScreen extends StatefulWidget {
   const MailboxScreen({super.key});
+
+  @override
+  State<MailboxScreen> createState() => _MailboxScreenState();
+}
+
+class _MailboxScreenState extends State<MailboxScreen> {
+  int viewIndex = 0;
+  final views = [InboxListView(), SentListView()];
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +36,15 @@ class MailboxScreen extends StatelessWidget {
             ],
             actionsPadding: EdgeInsets.only(right: Spacing.large),
           ),
-          drawer: MailNavigationDrawer(),
-          body: InboxListView(),
+          drawer: MailNavigationDrawer(
+            selectedIndex: viewIndex,
+            onDestinationSelected: (index) {
+              setState(() {
+                viewIndex = index;
+              });
+            },
+          ),
+          body: views[viewIndex],
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () => compose(context),
             icon: Icon(Icons.create),
@@ -53,8 +69,15 @@ class MailboxScreen extends StatelessWidget {
       ),
       body: Row(
         children: [
-          MailNavigationRail(),
-          Expanded(child: InboxListView()),
+          MailNavigationRail(
+            selectedIndex: viewIndex,
+            onDestinationSelected: (index) {
+              setState(() {
+                viewIndex = index;
+              });
+            },
+          ),
+          Expanded(child: views[viewIndex]),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

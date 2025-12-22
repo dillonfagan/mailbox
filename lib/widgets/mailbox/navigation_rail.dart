@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 class MailNavigationRail extends StatelessWidget {
-  const MailNavigationRail({super.key});
+  final int selectedIndex;
+  final void Function(int) onDestinationSelected;
+
+  const MailNavigationRail({
+    super.key,
+    required this.selectedIndex,
+    required this.onDestinationSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     return NavigationRail(
       labelType: NavigationRailLabelType.all,
-      selectedIndex: 0,
+      selectedIndex: selectedIndex,
+      onDestinationSelected: onDestinationSelected,
       destinations: [
         NavigationRailDestination(
           icon: Icon(Icons.inbox_outlined),
